@@ -1,0 +1,22 @@
+{
+  "name": "sample-app",
+  "version": "1.0.0",
+  "description": "sample-app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbg-cs-devops/devops-assignment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lbg-cs-devops/devops-assignment/issues"
+  },
+  "homepage": "https://github.com/lbg-cs-devops/devops-assignment#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

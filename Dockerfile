@@ -1,26 +1,23 @@
-FROM alpine:3.8
+FROM node:10-alpine
 
-ARG PROJECT_NAME
+RUN apk add --update \
+  bash \
+  git \
+  && rm -rf /var/cache/apk/*
 
-RUN addgroup www
-RUN adduser -D -g 'www' nginx
+WORKDIR /app
 
-RUN apk update && apk add nginx curl
+RUN npm config set unsafe-perm true
+
+RUN npm install -g npm@latest
 
 
+COPY package.json /app/
 
-RUN mkdir /www && mkdir /www/${PROJECT_NAME} && \
-	mkdir /run/nginx && \
-    chown -R nginx:www /var/lib/nginx && \
-    chown -R nginx:www /www/${PROJECT_NAME} && \
-    chown -R nginx:www /run/nginx
+RUN npm install \
+    && npm config set registry http://registry.npmjs.org/ \
+    && npm install express --save
 
-RUN rm -rf /etc/nginx/conf.d/default.conf
-
-COPY www/* /www/${PROJECT_NAME}/
-
-COPY nginx/default1.conf /etc/nginx/conf.d/${PROJECT_NAME}.conf
-
-EXPOSE 80
-
-ENTRYPOINT nginx -g 'daemon off;'
+COPY . /app/
+EXPOSE 8080
+CMD node index.js

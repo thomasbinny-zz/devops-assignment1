@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-application
+  namespace: test
+  labels:
+    application: test
+metadata:
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 50%
+  selector:
+    matchLabels:
+      application: test
+  template:
+    metadata:
+      labels:
+        application: test
+    spec:
+      containers:
+        - name: test-application
+          image: ${CONTAINER_IMAGE}
+          ports:
+            - containerPort: 8080
+              name: http
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-application
+  namespace: test
+  labels:
+    application: test
+spec:
+  selector:
+    application: test
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
